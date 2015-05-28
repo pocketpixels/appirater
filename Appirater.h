@@ -295,6 +295,12 @@ extern NSString *const kAppiraterReminderRequestDate;
  */
 + (void)setAlwaysUseMainBundle:(BOOL)useMainBundle;
 
+/*!
+ If set to YES, Appirater will ask users who have rated a previous version again whenever there is a new version of the app. Default NO.
+ */
++ (void)setAllowsPromptToReRate:(BOOL)allowsPromptToReRate;
+
+
 @end
 
 

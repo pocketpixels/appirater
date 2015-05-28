@@ -47,6 +47,7 @@ NSString *const kAppiraterUseCount					= @"kAppiraterUseCount";
 NSString *const kAppiraterSignificantEventCount		= @"kAppiraterSignificantEventCount";
 NSString *const kAppiraterCurrentVersion			= @"kAppiraterCurrentVersion";
 NSString *const kAppiraterRatedCurrentVersion		= @"kAppiraterRatedCurrentVersion";
+NSString *const kAppiraterRatedAnyVersion           = @"kAppiraterRatedAnyVersion";
 NSString *const kAppiraterDeclinedToRate			= @"kAppiraterDeclinedToRate";
 NSString *const kAppiraterReminderRequestDate		= @"kAppiraterReminderRequestDate";
 
@@ -69,6 +70,7 @@ static BOOL _usesAnimation = TRUE;
 static UIStatusBarStyle _statusBarStyle;
 static BOOL _modalOpen = false;
 static BOOL _alwaysUseMainBundle = NO;
+static BOOL _allowsPromptToReRate = NO;
 
 @interface Appirater ()
 @property (nonatomic, copy) NSString *alertTitle;
@@ -158,6 +160,10 @@ static BOOL _alwaysUseMainBundle = NO;
 + (void)setAlwaysUseMainBundle:(BOOL)alwaysUseMainBundle {
     _alwaysUseMainBundle = alwaysUseMainBundle;
 }
++ (void)setAllowsPromptToReRate:(BOOL)allowsPromptToReRate{
+    _allowsPromptToReRate = allowsPromptToReRate;
+}
+
 
 + (NSBundle *)bundle
 {
@@ -314,7 +320,9 @@ static BOOL _alwaysUseMainBundle = NO;
     return ([self connectedToNetwork]
             && ![self userHasDeclinedToRate]
             && !self.ratingAlert.visible
-            && ![self userHasRatedCurrentVersion]);
+            && ![self userHasRatedCurrentVersion]
+            && (![self userHasRatedAnyVersion] || _allowsPromptToReRate)
+        );
 }
 
 // have the rating conditions been met/earned? (regardless of whether this would be a moment when it's appropriate to show a new rating alert)
@@ -493,6 +501,11 @@ static BOOL _alwaysUseMainBundle = NO;
     return [[NSUserDefaults standardUserDefaults] boolForKey:kAppiraterRatedCurrentVersion];
 }
 
+- (BOOL)userHasRatedAnyVersion {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:kAppiraterRatedAnyVersion];
+}
+
+
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-implementations"
 + (void)appLaunched {
@@ -606,6 +619,7 @@ static BOOL _alwaysUseMainBundle = NO;
 	
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	[userDefaults setBool:YES forKey:kAppiraterRatedCurrentVersion];
+    [userDefaults setBool:YES forKey:kAppiraterRatedAnyVersion];
 	[userDefaults synchronize];
 
 	//Use the in-app StoreKit view if available (iOS 6) and imported. This works in the simulator.
