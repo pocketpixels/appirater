@@ -317,6 +317,8 @@ static BOOL _allowsPromptToReRate = NO;
 // * number of significant events
 // * time since last reminder
 - (BOOL)ratingAlertIsAppropriate {
+    if (_debug)
+        return YES;
     return ([self connectedToNetwork]
             && ![self userHasDeclinedToRate]
             && !self.ratingAlert.visible
