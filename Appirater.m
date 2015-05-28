@@ -280,14 +280,14 @@ static BOOL _allowsPromptToReRate = NO;
   	alertView = [[UIAlertView alloc] initWithTitle:self.alertTitle
                                            message:self.alertMessage
                                           delegate:self
-                                 cancelButtonTitle:self.alertCancelTitle
-                                 otherButtonTitles:self.alertRateTitle, self.alertRateLaterTitle, nil];
+                                 cancelButtonTitle:nil
+                                 otherButtonTitles:self.alertRateTitle, self.alertCancelTitle, self.alertRateLaterTitle, nil];
   } else {
   	alertView = [[UIAlertView alloc] initWithTitle:self.alertTitle
                                            message:self.alertMessage
                                           delegate:self
-                                 cancelButtonTitle:self.alertCancelTitle
-                                 otherButtonTitles:self.alertRateTitle, nil];
+                                 cancelButtonTitle:nil
+                                 otherButtonTitles:self.alertRateTitle, self.alertCancelTitle, nil];
   }
 
 	self.ratingAlert = alertView;
@@ -665,22 +665,22 @@ static BOOL _allowsPromptToReRate = NO;
     id <AppiraterDelegate> delegate = _delegate;
 	
 	switch (buttonIndex) {
-		case 0:
+        case 0:
+        {
+            // they want to rate it
+            [Appirater rateApp];
+            if(delegate&& [delegate respondsToSelector:@selector(appiraterDidOptToRate:)]){
+                [delegate appiraterDidOptToRate:self];
+            }
+            break;
+        }
+		case 1:
 		{
 			// they don't want to rate it
 			[userDefaults setBool:YES forKey:kAppiraterDeclinedToRate];
 			[userDefaults synchronize];
 			if(delegate && [delegate respondsToSelector:@selector(appiraterDidDeclineToRate:)]){
 				[delegate appiraterDidDeclineToRate:self];
-			}
-			break;
-		}
-		case 1:
-		{
-			// they want to rate it
-			[Appirater rateApp];
-			if(delegate&& [delegate respondsToSelector:@selector(appiraterDidOptToRate:)]){
-				[delegate appiraterDidOptToRate:self];
 			}
 			break;
 		}
