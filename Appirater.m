@@ -499,6 +499,10 @@ static BOOL _allowsPromptToReRate = NO;
     return [[NSUserDefaults standardUserDefaults] boolForKey:kAppiraterRatedAnyVersion];
 }
 
+- (NSInteger)significantEventCount {
+    return [[NSUserDefaults standardUserDefaults] integerForKey:kAppiraterSignificantEventCount];
+}
+
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-implementations"

@@ -98,6 +98,8 @@ extern NSString *const kAppiraterReminderRequestDate;
 @property(nonatomic, unsafe_unretained) NSObject <AppiraterDelegate> *delegate;
 #endif
 
++ (Appirater*)sharedInstance;
+
 /*!
  Tells Appirater that the app has launched, and on devices that do NOT
  support multitasking, the 'uses' count will be incremented. You should
@@ -193,6 +195,8 @@ extern NSString *const kAppiraterReminderRequestDate;
  app store, but they've just clicked the rate button on the Appirater dialog. 
 */
 - (BOOL)userHasRatedCurrentVersion;
+
+- (NSInteger)significantEventCount;
 
 @end
 
