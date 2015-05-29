@@ -56,9 +56,9 @@ NSString *templateReviewURLiOS7 = @"itms-apps://itunes.apple.com/app/idAPP_ID";
 NSString *templateReviewURLiOS8 = @"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=APP_ID&onlyLatestVersion=true&pageNumber=0&sortOrdering=1&type=Purple+Software";
 
 static NSString *_appId;
-static double _daysUntilPrompt = 30;
-static NSInteger _usesUntilPrompt = 20;
-static NSInteger _significantEventsUntilPrompt = -1;
+static double _daysUntilPrompt = 9999999;
+static NSInteger _usesUntilPrompt = 9999999;
+static NSInteger _significantEventsUntilPrompt = 9999999;
 static double _timeBeforeReminding = 1;
 static BOOL _debug = NO;
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_5_0
